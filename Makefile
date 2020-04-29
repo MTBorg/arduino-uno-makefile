@@ -65,27 +65,24 @@ OSNAME =	$(shell uname)
 
 # Name of the program and source .ino (previously .pde) file.
 # No extension here (e.g. PROJECT = Blink).
-PROJECT ?=	Blink
+PROJECT ?= 
 
 # Project version. Only used for packing the source into an archive.
 VERSION ?=	1.0
 
 # Arduino model. E.g. atmega328, mega2560, uno.
-# Valid model names can be found in $(ARDUINO_DIR)/hardware/arduino/avr/boards.txt
+# Valid model names can be found in $(ARDUINO_DIR)/hardware/archlinux-arduino/avr/boards.txt
 # This must be set to a valid model name.
-ARDUINO_MODEL ?= micro
-#ARDUINO_MODEL = uno
-#ARDUINO_MODEL = nano328  # Is set to a 168 CPU
-#ARDUINO_MODEL = atmega2560
+ARDUINO_MODEL = uno
 
 # Arduino family E.g. mega, diecimila, nano.
-# Valid family names can be found in $(ARDUINO_Dir)/hardware/arduino/avr/boards.txt
+# Valid family names can be found in $(ARDUINO_Dir)/hardware/archlinux-arduino/avr/boards.txt
 # Set this if your card is a part of a subset
 #ARDUINO_FAMILY = mega
 
 # Arduino variant (for Arduino 1.0+).
 # Directory containing the pins_arduino.h file.
-#ARDUINO_VARIANT=$(ARDUINO_DIR)/hardware/arduino/avr/variants/micro
+#ARDUINO_VARIANT=$(ARDUINO_DIR)/hardware/archlinux-arduino/avr/variants/micro
 
 # MCU architecture.
 # Currently hardcoded to avr (sam, etc. are unsupported.)
@@ -101,24 +98,20 @@ PORT ?=		/dev/serial/by-id/*Arduino*
 
 # Arduino version (e.g. 23 for 0023, or 105 for 1.0.5).
 # Make sure this matches ARDUINO_DIR below!
-#ARDUINO = 	23
-ARDUINO ?= 	161
+ARDUINO ?= 	1812
 
 # Location of the official Arduino IDE.
 # E.g. /usr/local/arduino, or $(HOME)/arduino
 # Make sure this matches ARDUINO above!
-#ARDUINO_DIR =	/usr/local/pckg/arduino/arduino-0023
 ARDUINO_DIR ?=	/usr/share/arduino
 
 # Arduino 0.x based on 328P now need the new programmer protocol.
 # Arduino 1.6+ uses the avr109 programmer by default
 # ICSP programmers can also be used, for example: usbasp
 # If unset, a default is chosen based on ARDUINO_MODEL and ARDUINO_FAMILY.
-#AVRDUDE_PROGRAMMER = usbasp
-AVRDUDE_PROGRAMMER = avr109
 
 # Arduino core sources.
-#ARDUINO_CORE ?=	$(ARDUINO_DIR)/hardware/arduino/avr/cores/arduino
+ARDUINO_CORE ?=	$(ARDUINO_DIR)/hardware/archlinux-arduino/avr/cores/arduino
 
 # Standard Arduino libraries used, e.g. EEPROM, LiquidCrystal.
 # Give the name of the directory containing the library source files.
@@ -197,7 +190,7 @@ TARFILE =	$(PROJECT)-$(VERSION).tar
 RESETCMD ?=	stty
 
 # Set Arduino core sources location to default, if still unset.
-ARDUINO_CORE ?= $(ARDUINO_DIR)/hardware/arduino/avr/cores/arduino
+ARDUINO_CORE ?= $(ARDUINO_DIR)/hardware/archlinux-arduino/avr/cores/arduino
 
 # Get the upload rate, CPU model, CPU frequency, avrdude programmer type
 # and other variables from the IDE files.
@@ -210,7 +203,7 @@ endif
 
 getboardvar = $(shell \
 	sed "/^\($(MODEL_PATTERN_MATCHING)\)\.$(1)=/ { s/.*=//; q }; d" \
-		$(ARDUINO_DIR)/hardware/arduino/avr/boards.txt \
+		$(ARDUINO_DIR)/hardware/archlinux-arduino/avr/boards.txt \
 	)
 
 UPLOAD_RATE ?=	$(call getboardvar,upload.speed)
@@ -241,12 +234,12 @@ endif
 # Default is "standard".
 ifeq ($(ARDUINO_VARIANT),)
 ifeq ("$(ARDUINO_MODEL)", $(filter "$(ARDUINO_MODEL)", "mega" "mega2560"))
-ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/arduino/avr/variants/mega
+ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/archlinux-arduino/avr/variants/mega
 else
 ifeq "$(ARDUINO_MODEL)" "micro"
-ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/arduino/avr/variants/micro
+ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/archlinux-arduino/avr/variants/micro
 else
-ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/arduino/avr/variants/standard
+ARDUINO_VARIANT ?= $(ARDUINO_DIR)/hardware/archlinux-arduino/avr/variants/standard
 endif
 endif
 endif
@@ -271,8 +264,8 @@ ALIBDIRS = $(wildcard \
 		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/libraries/%/utility) \
 		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/libraries/%/src) \
 		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/libraries/%/src/$(ARCH)) \
-		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/hardware/arduino/avr/libraries/%) \
-		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/hardware/arduino/avr/libraries/%/utility) \
+		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/hardware/archlinux-arduino/avr/libraries/%) \
+		$(ARDUINO_LIBS:%=$(ARDUINO_DIR)/hardware/archlinux-arduino/avr/libraries/%/utility) \
 		)
 ALIBSRC =	$(wildcard $(ALIBDIRS:%=%/*.c))
 ALIBCXXSRC =	$(wildcard $(ALIBDIRS:%=%/*.cpp))
