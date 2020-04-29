@@ -1,3 +1,7 @@
+# About this fork
+This a fork for compiling and uploading Arduino sketches for the Arduino Uno model specifically tailored for Arch Linux. 
+Tested on an Arduino Rev3 with Arduino version 1.8.12.
+
 # Arduino Makefile
 
 This repository contains a simple Makefile that can be used with many Arudino sketches, so that the sketch may be compiled and uploaded via the command line.
